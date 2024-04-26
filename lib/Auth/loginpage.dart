@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart'; // Import the google_fonts package
+import 'package:google_fonts/google_fonts.dart';
+import 'package:turfbokkingapp/Auth/create_admin_ac.dart';
+import 'package:turfbokkingapp/Auth/create_client_ac.dart';
+import 'package:turfbokkingapp/Views/Home/clienthomepage.dart'; // Import the google_fonts package
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -35,68 +38,77 @@ class _LoginPageState extends State<LoginPage>
             end: Alignment.bottomCenter,
             colors: [
               Color(0xFF1E88E5),
-              Color(0xFF42A5F5),
+              Color.fromARGB(255, 245, 66, 185),
             ],
           ),
         ),
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/logo.jpeg', // Replace with your logo path
-                  height: 120,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'TurfBooking',
-                  style: GoogleFonts.poppins(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/images/logo.jpeg', // Replace with your logo path
+                    height: 120,
                   ),
-                ),
-                const SizedBox(height: 32),
-                Card(
-                  elevation: 8,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.all(24),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TabBar(
-                          controller: _tabController,
-                          indicator: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: const Color(0xFF1E88E5),
-                          ),
-                          labelColor: Colors.white,
-                          unselectedLabelColor: Colors.grey,
-                          tabs: const [
-                            Tab(text: 'Client Login'),
-                            Tab(text: 'Admin Login'),
-                          ],
-                        ),
-                        const SizedBox(height: 16),
-                        SizedBox(
-                          height: 300,
-                          child: TabBarView(
-                            controller: _tabController,
-                            children: const [
-                              ClientLoginTab(),
-                              AdminLoginTab(),
-                            ],
-                          ),
-                        ),
-                      ],
+                  const SizedBox(height: 16),
+                  Text(
+                    'TurfBooking',
+                    style: GoogleFonts.poppins(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 32),
+                  Card(
+                    elevation: 8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TabBar(
+                            controller: _tabController,
+                            indicator: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: const Color(0xFF1E88E5),
+                            ),
+                            labelColor: Colors.white,
+                            unselectedLabelColor: Colors.grey,
+                            tabs: const [
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Tab(text: 'Client Login'),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Tab(text: 'Admin Login'),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          SizedBox(
+                            height: 300,
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: const [
+                                ClientLoginTab(),
+                                AdminLoginTab(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -182,7 +194,10 @@ class _ClientLoginTabState extends State<ClientLoginTab> {
                 ),
                 TextButton(
                   onPressed: () {
-                    // Navigate to the sign-up page
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (ctx) {
+                      return CreateClientAccountPage();
+                    }));
                   },
                   child: Text(
                     'Create Account',
@@ -197,7 +212,9 @@ class _ClientLoginTabState extends State<ClientLoginTab> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // Navigate to the RootApp
+                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+                  return ClientHomeScreen();
+                }));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF1E88E5),
@@ -302,7 +319,10 @@ class _AdminLoginTabState extends State<AdminLoginTab> {
                 ),
                 TextButton(
                   onPressed: () {
-                    // Navigate to the sign-up page
+                    Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (ctx) {
+                      return AdminAccountScreen();
+                    }));
                   },
                   child: Text(
                     'Create Account',
