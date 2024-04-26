@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:turfbokkingapp/Auth/create_admin_ac.dart';
 import 'package:turfbokkingapp/Auth/create_client_ac.dart';
+import 'package:turfbokkingapp/Views/Home/adminhomepage.dart';
 import 'package:turfbokkingapp/Views/Home/clienthomepage.dart'; // Import the google_fonts package
 
 class LoginPage extends StatefulWidget {
@@ -337,7 +338,9 @@ class _AdminLoginTabState extends State<AdminLoginTab> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                // Navigate to the AdminHomePage
+                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+                  return AdminHomeScreen();
+                }));
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF1E88E5),
