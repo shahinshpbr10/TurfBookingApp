@@ -5,6 +5,8 @@ import 'package:turfbokkingapp/Views/Home/client_tabs/home_tab.dart';
 import 'package:turfbokkingapp/Views/Home/client_tabs/settings_tab.dart';
 
 class ClientHomeScreen extends StatefulWidget {
+  const ClientHomeScreen({super.key});
+
   @override
   _ClientHomeScreenState createState() => _ClientHomeScreenState();
 }
@@ -12,7 +14,7 @@ class ClientHomeScreen extends StatefulWidget {
 class _ClientHomeScreenState extends State<ClientHomeScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [HomeTab(), TurfListPage(), SettingsClient()];
+  final List<Widget> _pages = [const HomeTab(), const TurfListPage(), const SettingsClient()];
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class _ClientHomeScreenState extends State<ClientHomeScreen> {
             _selectedIndex = index;
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',

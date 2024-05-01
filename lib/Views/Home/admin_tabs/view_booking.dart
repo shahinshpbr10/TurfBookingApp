@@ -14,7 +14,7 @@ class Booking {
 }
 
 class ViewBookingsPage extends StatefulWidget {
-  const ViewBookingsPage({Key? key}) : super(key: key);
+  const ViewBookingsPage({super.key});
 
   @override
   _ViewBookingsPageState createState() => _ViewBookingsPageState();
@@ -31,7 +31,7 @@ class _ViewBookingsPageState extends State<ViewBookingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Football Turf Bookings'),
+        title: const Text('Football Turf Bookings'),
       ),
       body: ListView.builder(
         itemCount: bookings.length,

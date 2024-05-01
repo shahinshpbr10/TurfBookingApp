@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class TurfListPage extends StatefulWidget {
+  const TurfListPage({super.key});
+
   @override
   _TurfListPageState createState() => _TurfListPageState();
 }
@@ -29,7 +31,7 @@ class _TurfListPageState extends State<TurfListPage> {
   ];
 
   List<Turf> filteredTurfs = [];
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -52,7 +54,7 @@ class _TurfListPageState extends State<TurfListPage> {
     return Scaffold(
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           Padding(
@@ -60,7 +62,7 @@ class _TurfListPageState extends State<TurfListPage> {
             child: TextField(
               controller: _searchController,
               onChanged: _filterTurfs,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Search turfs',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
@@ -93,7 +95,7 @@ class TurfCard extends StatelessWidget {
   final int price;
   final String location;
 
-  const TurfCard({
+  const TurfCard({super.key, 
     required this.name,
     required this.imageUrl,
     required this.price,

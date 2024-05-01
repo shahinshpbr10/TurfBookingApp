@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SettingsClient extends StatefulWidget {
+  const SettingsClient({super.key});
+
   @override
   _SettingsCleintState createState() => _SettingsCleintState();
 }
@@ -13,7 +15,7 @@ class _SettingsCleintState extends State<SettingsClient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Settings',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -24,32 +26,32 @@ class _SettingsCleintState extends State<SettingsClient> {
         elevation: 0,
       ),
       body: ListView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         children: [
           Card(
             child: ListTile(
               leading: CircleAvatar(
-                child: Icon(
+                backgroundColor: Colors.teal.withOpacity(0.2),
+                child: const Icon(
                   Icons.account_circle,
                   color: Colors.teal,
                 ),
-                backgroundColor: Colors.teal.withOpacity(0.2),
               ),
-              title: Text(
+              title: const Text(
                 'My Account',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18.0,
                 ),
               ),
-              trailing: Icon(Icons.arrow_forward_ios),
+              trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () {
                 // Navigate to account page
               },
             ),
           ),
           SwitchListTile(
-            title: Text(
+            title: const Text(
               'Notifications',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -62,13 +64,13 @@ class _SettingsCleintState extends State<SettingsClient> {
                 _notificationsEnabled = value;
               });
             },
-            secondary: Icon(
+            secondary: const Icon(
               Icons.notifications,
               color: Colors.teal,
             ),
           ),
           SwitchListTile(
-            title: Text(
+            title: const Text(
               'Dark Mode',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -81,58 +83,58 @@ class _SettingsCleintState extends State<SettingsClient> {
                 _darkModeEnabled = value;
               });
             },
-            secondary: Icon(
+            secondary: const Icon(
               Icons.brightness_4,
               color: Colors.teal,
             ),
           ),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.language,
               color: Colors.teal,
             ),
-            title: Text(
+            title: const Text(
               'Change Language',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               ),
             ),
-            trailing: Icon(Icons.arrow_forward_ios),
+            trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               // Navigate to language selection page
             },
           ),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.policy,
               color: Colors.teal,
             ),
-            title: Text(
+            title: const Text(
               'Privacy Policy',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               ),
             ),
-            trailing: Icon(Icons.arrow_forward_ios),
+            trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               // Navigate to privacy policy page
             },
           ),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.assignment,
               color: Colors.teal,
             ),
-            title: Text(
+            title: const Text(
               'Terms of Service',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
               ),
             ),
-            trailing: Icon(Icons.arrow_forward_ios),
+            trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               // Navigate to terms of service page
             },

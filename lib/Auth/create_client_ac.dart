@@ -1,10 +1,15 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CreateClientAccountPage extends StatefulWidget {
+  const CreateClientAccountPage({super.key});
+
   @override
   _CreateClientAccountPageState createState() =>
       _CreateClientAccountPageState();
@@ -21,6 +26,71 @@ class _CreateClientAccountPageState extends State<CreateClientAccountPage> {
   String _contactDetails = '';
   XFile? _experienceProof;
   File? _profilePicture;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> _createAccount() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+
+        String? profilePictureUrl;
+        if (_profilePicture != null) {
+          Reference storageReference = FirebaseStorage.instance
+              .ref()
+              .child('profile_pictures/${userCredential.user!.uid}.jpg');
+          UploadTask uploadTask = storageReference.putFile(_profilePicture!);
+          TaskSnapshot taskSnapshot = await uploadTask;
+          profilePictureUrl = await taskSnapshot.ref.getDownloadURL();
+        }
+
+        String? experienceProofUrl;
+        if (_experienceProof != null) {
+          Reference storageReference = FirebaseStorage.instance
+              .ref()
+              .child('experience_proofs/${userCredential.user!.uid}.jpg');
+          UploadTask uploadTask =
+              storageReference.putFile(File(_experienceProof!.path));
+          TaskSnapshot taskSnapshot = await uploadTask;
+          experienceProofUrl = await taskSnapshot.ref.getDownloadURL();
+        }
+
+        await _firestore.collection('users').doc(userCredential.user!.uid).set({
+          'userId': userCredential.user!.uid,
+          'name': _name,
+          'email': _email,
+          'userType': _userType.name,
+          'playingPosition':
+              _userType == UserType.professional ? _playingPosition : null,
+          'contactDetails':
+              _userType == UserType.professional ? _contactDetails : null,
+          'profilePictureUrl': profilePictureUrl,
+          'experienceProofUrl': experienceProofUrl,
+        });
+
+        print("User account created successfully!");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully'),
+          ),
+        );
+      } catch (e) {
+        print("Error creating account: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error creating account: $e'),
+          ),
+        );
+      }
+    } else {
+      print("Error validating form");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,29 +190,6 @@ class _CreateClientAccountPageState extends State<CreateClientAccountPage> {
                 },
               ),
               const SizedBox(height: 16.0),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  labelStyle: GoogleFonts.poppins(),
-                  prefixIcon: const Icon(Icons.lock),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please confirm your password';
-                  }
-                  if (value != _password) {
-                    return 'Passwords do not match';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _confirmPassword = value!;
-                },
-              ),
               const SizedBox(height: 16.0),
               ListTile(
                 title: Text(
@@ -230,39 +277,28 @@ class _CreateClientAccountPageState extends State<CreateClientAccountPage> {
                 ),
               const SizedBox(height: 32.0),
               ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      // Perform account creation logic here
-                      print('Name: $_name');
-                      print('Email: $_email');
-                      print('User Type: ${_userType.name}');
-                      if (_userType == UserType.professional) {
-                        print('Playing Position: $_playingPosition');
-                        print('Contact Details: $_contactDetails');
-                        print('Experience Proof: ${_experienceProof?.path}');
-                      }
-                      // ...
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1E88E5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                onPressed: () {
+                  _createAccount();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1E88E5),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 16,
+                    horizontal: 32,
+                  ),
+                  child: Text(
+                    'Create Account',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 16,
-                      horizontal: 32,
-                    ),
-                    child: Text(
-                      'Create Account',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ))
+                ),
+              )
             ],
           ),
         ),

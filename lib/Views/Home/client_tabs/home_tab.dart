@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class HomeTab extends StatefulWidget {
+  const HomeTab({super.key});
+
   @override
   _HomeTabState createState() => _HomeTabState();
 }
@@ -19,14 +21,14 @@ class _HomeTabState extends State<HomeTab> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Find and Book'),
+        title: const Text('Find and Book'),
         centerTitle: true,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Text(
               'The Best Football Turfs',
               style: TextStyle(
@@ -50,8 +52,8 @@ class _HomeTabState extends State<HomeTab> {
                   .toList(),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Text(
               'Featured',
               style: TextStyle(
@@ -60,9 +62,9 @@ class _HomeTabState extends State<HomeTab> {
               ),
             ),
           ),
-          FeaturedTurf(),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const FeaturedTurf(),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Text(
               'Recommended',
               style: TextStyle(
@@ -71,7 +73,7 @@ class _HomeTabState extends State<HomeTab> {
               ),
             ),
           ),
-          RecommendedTurf(),
+          const RecommendedTurf(),
         ],
       ),
     );
@@ -79,6 +81,8 @@ class _HomeTabState extends State<HomeTab> {
 }
 
 class FeaturedTurf extends StatelessWidget {
+  const FeaturedTurf({super.key});
+
   @override
   Widget build(BuildContextContext) {
     return Card(
@@ -91,8 +95,8 @@ class FeaturedTurf extends StatelessWidget {
             width: double.infinity,
             fit: BoxFit.fill,
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -137,6 +141,8 @@ class FeaturedTurf extends StatelessWidget {
 }
 
 class RecommendedTurf extends StatelessWidget {
+  const RecommendedTurf({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -148,9 +154,9 @@ class RecommendedTurf extends StatelessWidget {
             width: 100.0,
             fit: BoxFit.cover,
           ),
-          Expanded(
+          const Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

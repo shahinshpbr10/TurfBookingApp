@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:turfbokkingapp/Auth/loginpage.dart';
 
 class OnboardingPage extends StatefulWidget {
+  const OnboardingPage({super.key});
+
   @override
   _OnboardingPageState createState() => _OnboardingPageState();
 }
@@ -10,7 +12,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   int _currentPage = 0;
   final PageController _pageController = PageController();
 
-  List<Map<String, String>> _onboardingData = [
+  final List<Map<String, String>> _onboardingData = [
     {
       'title': 'Welcome to TurfBooking',
       'description': 'Book your favorite football turf with ease.',
@@ -37,7 +39,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
       // Go to the next page
       _pageController.animateToPage(
         _currentPage + 1,
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
     }
@@ -69,18 +71,18 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         _onboardingData[index]['image']!,
                         height: 300,
                       ),
-                      SizedBox(height: 24),
+                      const SizedBox(height: 24),
                       Text(
                         _onboardingData[index]['title']!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Text(
                         _onboardingData[index]['description']!,
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -101,8 +103,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   children: List.generate(
                     _onboardingData.length,
                     (index) => AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      margin: EdgeInsets.symmetric(horizontal: 4),
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.symmetric(horizontal: 4),
                       height: 8,
                       width: _currentPage == index ? 24 : 8,
                       decoration: BoxDecoration(

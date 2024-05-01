@@ -1,8 +1,12 @@
 import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:geolocator/geolocator.dart';
 
 class AdminAccountScreen extends StatefulWidget {
   const AdminAccountScreen({super.key});
@@ -24,7 +28,8 @@ class _AdminAccountScreenState extends State<AdminAccountScreen> {
   Position? _shopLocation;
   bool viewPassword = true;
 
-  String? _selectedItem;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> _pickImageShop(ImageSource source) async {
     final pickedImage = await ImagePicker().pickImage(source: source);
@@ -64,15 +69,67 @@ class _AdminAccountScreenState extends State<AdminAccountScreen> {
     }
   }
 
+  Future<void> _createAccount() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      try {
+        UserCredential userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _email,
+          password: _password,
+        );
+
+        String? turfImageUrl;
+
+        if (_turfImage != null) {
+          Reference storageReference = FirebaseStorage.instance
+              .ref()
+              .child('turf_images/${userCredential.user!.uid}.jpg');
+          UploadTask uploadTask = storageReference.putFile(_turfImage!);
+          TaskSnapshot taskSnapshot = await uploadTask;
+          turfImageUrl = await taskSnapshot.ref.getDownloadURL();
+        }
+
+        await _firestore.collection('turfs').doc(userCredential.user!.uid).set({
+          'ownerId': userCredential.user!.uid,
+          'ownerName': _OwnerName,
+          'turfName': _TurfName,
+          'turfAddress': _TurfAddress,
+          'contactNumber': _contactNumber,
+          'email': _email,
+          'turfImageUrl': turfImageUrl,
+          'turfLogo': _turfLogo != null ? _turfLogo!.path : null,
+          'location': _shopLocation != null
+              ? GeoPoint(_shopLocation!.latitude, _shopLocation!.longitude)
+              : null,
+        });
+
+        print("Turf account created successfully!");
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Account created successfully'),
+          ),
+        );
+      } catch (e) {
+        print("Error creating account: $e");
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error creating account: $e'),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            'Turf Account',
-            style: Theme.of(context).textTheme.headlineLarge,
-          ),
+        title: const Center(
+          child: Text('Turf Account'),
         ),
       ),
       body: Padding(
@@ -93,7 +150,7 @@ class _AdminAccountScreenState extends State<AdminAccountScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Add Turf Image ',
+                            'Add Turf Image',
                             style: TextStyle(
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
@@ -159,7 +216,7 @@ class _AdminAccountScreenState extends State<AdminAccountScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Add Turf Logo ',
+                            'Add Turf Logo',
                             style: TextStyle(
                               fontSize: 18.0,
                               fontWeight: FontWeight.bold,
@@ -177,7 +234,7 @@ class _AdminAccountScreenState extends State<AdminAccountScreen> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         ListTile(
-                                          leading: const Icon(Icons.camera_alt),
+                                          leading: Icon(Icons.camera_alt),
                                           title: const Text('Camera'),
                                           onTap: () {
                                             _pickLogoShop(ImageSource.camera);
@@ -362,30 +419,6 @@ class _AdminAccountScreenState extends State<AdminAccountScreen> {
                     _contactNumber = value!;
                   },
                 ),
-                // Row(
-                //   children: [
-                //     DropdownButton<String>(
-                //       value: _selectedItem,
-                //       hint: const Text("Select shop Type"),
-                //       items: <String>[
-                //         'Super market',
-                //         'electronics',
-                //         'hypermarket',
-                //         'other'
-                //       ].map((String value) {
-                //         return DropdownMenuItem<String>(
-                //           value: value,
-                //           child: Text(value),
-                //         );
-                //       }).toList(),
-                //       onChanged: (value) {
-                //         setState(() {
-                //           _selectedItem = value;
-                //         });
-                //       },
-                //     ),
-                //   ],
-                // ),
                 const SizedBox(height: 16.0),
                 SizedBox(
                   width: double.infinity,
@@ -414,13 +447,13 @@ class _AdminAccountScreenState extends State<AdminAccountScreen> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
                             // Check if the image and location are not null
                             if (_turfImage != null &&
                                 _shopLocation != null &&
                                 _turfLogo != null) {
                               // Proceed to create account
-                              // _createAccount();
-                              Navigator.pop(context);
+                              _createAccount();
                             } else {
                               // Show error message
                               ScaffoldMessenger.of(context).showSnackBar(

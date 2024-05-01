@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:turfbokkingapp/Auth/create_admin_ac.dart';
@@ -129,6 +130,37 @@ class _ClientLoginTabState extends State<ClientLoginTab> {
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
+  Future<void> _loginUser() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      try {
+        // Sign in with email and password
+        UserCredential userCredential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: _email, password: _password);
+
+        // Check if the user document exists in Firestore
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .get();
+
+        if (userDoc.exists) {
+          // User document exists, authentication successful
+          Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+            return const ClientHomeScreen();
+          }));
+          // Navigate to the next screen or perform other actions
+        } else {
+          // User document doesn't exist, handle the error
+          print('User document not found in Firestore');
+        }
+      } catch (e) {
+        // Handle any errors
+        print('Error logging in: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +229,7 @@ class _ClientLoginTabState extends State<ClientLoginTab> {
                   onPressed: () {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (ctx) {
-                      return CreateClientAccountPage();
+                      return const CreateClientAccountPage();
                     }));
                   },
                   child: Text(
@@ -213,9 +245,7 @@ class _ClientLoginTabState extends State<ClientLoginTab> {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-                  return ClientHomeScreen();
-                }));
+                _loginUser();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF1E88E5),
@@ -322,7 +352,7 @@ class _AdminLoginTabState extends State<AdminLoginTab> {
                   onPressed: () {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (ctx) {
-                      return AdminAccountScreen();
+                      return const AdminAccountScreen();
                     }));
                   },
                   child: Text(
@@ -339,7 +369,7 @@ class _AdminLoginTabState extends State<AdminLoginTab> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-                  return AdminHomeScreen();
+                  return const AdminHomeScreen();
                 }));
               },
               style: ElevatedButton.styleFrom(

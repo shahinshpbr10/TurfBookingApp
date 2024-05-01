@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AdminHomeTab extends StatefulWidget {
+  const AdminHomeTab({super.key});
+
   @override
   _AdminHomeTabState createState() => _AdminHomeTabState();
 }
@@ -32,10 +34,10 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
-              Center(
+              const Center(
                 child: Text(
                   'Available Booking Times',
                   style: TextStyle(
@@ -44,43 +46,43 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
                   ),
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Wrap(
                 spacing: 8.0,
                 runSpacing: 8.0,
                 children:
                     availableTimes.map((time) => _buildTimeSlot(time)).toList(),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _showAddTimeDialog,
-                child: Text('Add Time'),
+                child: const Text('Add Time'),
               ),
-              SizedBox(height: 16.0),
-              Text(
+              const SizedBox(height: 16.0),
+              const Text(
                 'Upcoming Tournaments',
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               ...tournaments
                   .map((tournament) => _buildTournamentCard(tournament))
-                  .toList(),
+                  ,
               ElevatedButton(
                 onPressed: _showAddTournamentDialog,
-                child: Text('Add Tournament'),
+                child: const Text('Add Tournament'),
               ),
-              SizedBox(height: 16.0),
-              Text(
+              const SizedBox(height: 16.0),
+              const Text(
                 'Hourly Rent Price',
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -94,7 +96,7 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
                   ),
                 ],
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
             ],
           ),
         ),
@@ -104,7 +106,7 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
 
   Widget _buildTimeSlot(String time) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       decoration: BoxDecoration(
         color: Colors.green[200],
         borderRadius: BorderRadius.circular(16.0),
@@ -114,18 +116,18 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
         children: [
           Text(
             time,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(width: 8.0),
+          const SizedBox(width: 8.0),
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () => _showEditTimeDialog(time),
           ),
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: () => _deleteTime(time),
           ),
         ],
@@ -135,7 +137,7 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
 
   Widget _buildPriceCard(String price, String label) {
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.green[100],
         borderRadius: BorderRadius.circular(8.0),
@@ -144,15 +146,15 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
         children: [
           Text(
             price,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 24.0,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
             ),
@@ -166,8 +168,8 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
     return GestureDetector(
       onTap: () => _showEditTournamentDialog(tournament),
       child: Container(
-        padding: EdgeInsets.all(16.0),
-        margin: EdgeInsets.only(bottom: 8.0),
+        padding: const EdgeInsets.all(16.0),
+        margin: const EdgeInsets.only(bottom: 8.0),
         decoration: BoxDecoration(
           color: Colors.green[100],
           borderRadius: BorderRadius.circular(8.0),
@@ -177,21 +179,21 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
           children: [
             Text(
               tournament.name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Text('Date: ${tournament.date}'),
             Text('Registration Deadline: ${tournament.registrationDeadline}'),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             ElevatedButton(
               onPressed: () => _deleteTournament(tournament),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
-              child: Text('Delete'),
+              child: const Text('Delete'),
             ),
           ],
         ),
@@ -203,9 +205,9 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Add Time'),
+        title: const Text('Add Time'),
         content: TextField(
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Enter time',
           ),
           onSubmitted: (value) {
@@ -223,7 +225,7 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Edit Time'),
+        title: const Text('Edit Time'),
         content: TextField(
           controller: TextEditingController(text: time),
           onSubmitted: (value) {
@@ -252,31 +254,31 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Add Tournament'),
+        title: const Text('Add Tournament'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Tournament Name',
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
               controller: dateController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Tournament Date',
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
               controller: registrationDeadlineController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Registration Deadline',
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 String name = nameController.text.trim();
@@ -291,13 +293,13 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
                   Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Please fill in all the fields'),
                     ),
                   );
                 }
               },
-              child: Text('Add'),
+              child: const Text('Add'),
             ),
           ],
         ),
@@ -309,12 +311,12 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Edit Tournament'),
+        title: const Text('Edit Tournament'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Tournament Name',
               ),
               onSubmitted: (value) {
@@ -327,9 +329,9 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
               },
               controller: TextEditingController(text: tournament.name),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Tournament Date',
               ),
               onSubmitted: (value) {
@@ -342,9 +344,9 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
               },
               controller: TextEditingController(text: tournament.date),
             ),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Registration Deadline',
               ),
               onSubmitted: (value) {
@@ -398,9 +400,9 @@ class _AdminHomeTabState extends State<AdminHomeTab> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Edit ${label} Price'),
+        title: Text('Edit $label Price'),
         content: TextField(
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Enter price',
           ),
           keyboardType: TextInputType.number,

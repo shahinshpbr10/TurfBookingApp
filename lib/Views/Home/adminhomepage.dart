@@ -5,6 +5,8 @@ import 'package:turfbokkingapp/Views/Home/admin_tabs/view_booking.dart';
 import 'package:turfbokkingapp/Views/Home/client_tabs/settings_tab.dart';
 
 class AdminHomeScreen extends StatefulWidget {
+  const AdminHomeScreen({super.key});
+
   @override
   _AdminHomeScreenState createState() => _AdminHomeScreenState();
 }
@@ -13,9 +15,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    AdminHomeTab(),
-    ViewBookingsPage(),
-    SettingsClient()
+    const AdminHomeTab(),
+    const ViewBookingsPage(),
+    const SettingsClient()
   ];
 
   @override
@@ -29,7 +31,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
             _selectedIndex = index;
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
